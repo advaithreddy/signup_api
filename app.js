@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const express = require('express')
 const cors = require('cors')
+const dotenv = require('dotenv')
 const app = express();
+
+// Load the environment variables from .env file
+dotenv.config();
 
 // Middleware
 app.use(cors());
@@ -10,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://Admin-user:nqcMs9XUQLtIQlQe@cluster0.2tabaib.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
