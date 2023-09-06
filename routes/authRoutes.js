@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken')
 const User = require('../models/User'); // Create a User model
 
 // Sign-up route
@@ -39,9 +40,12 @@ router.post('/signin', async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Incorrect password' });
     }
-    // User is authenticated, you can generate a JWT token here
-    // and send it in the response
-    return res.status(200).json({ message: 'Login successful' });
+    // User is authenticated, generate a JWT token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h', // Set the expiration time (adjust as needed)
+    });
+    // Send the token in the response
+    return res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal server error' });
