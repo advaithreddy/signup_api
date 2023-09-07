@@ -8,6 +8,17 @@ router.post('/signup', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    // Server-side email validation
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Invalid email address' });
+    }
+    
+    // Server-side password validation
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters long' });
+    }
+
     // Check if the user already exists in the database
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -24,6 +35,7 @@ router.post('/signup', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
+
 
 
 // Sign-in route
