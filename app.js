@@ -5,6 +5,11 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const app = express();
 
+// Edit profile
+const profileRoutes = require('./routes/profileRoutes');
+
+app.use('/profile', profileRoutes);
+
 // Load the environment variables from .env file
 dotenv.config();
 
